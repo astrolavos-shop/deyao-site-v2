@@ -3,7 +3,7 @@
 :root{--blue:#6ec1e4;--blue-d:#0b6a99;--navy:#08263b;--green:#4be892;--green-d:#0f7a4a;--bg:#f2f9fd;--ink:#14303f;--mut:#4d6676;--line:#d6e7f1;--card:#fff;--r:18px;--fs:17px}
 html.dark{--bg:#0b1c29;--ink:#e6f2f9;--mut:#a9c3d3;--line:#1f3a4d;--card:#10283a;--navy:#031420;--blue-d:#7fd0ef}
 html.hc{--ink:#000;--mut:#222;--blue-d:#004a73;--line:#000}
-*{box-sizing:border-box}html{scroll-behavior:smooth}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:112px}@media(max-width:980px){html{scroll-padding-top:16px}}
 body{margin:0;font:var(--fs)/1.6 "Roboto","Segoe UI",Arial,sans-serif;color:var(--ink);background:var(--card);overflow-x:hidden}
 a{color:var(--blue-d)}.wrap{max-width:1200px;margin:0 auto;padding:0 20px}
 .demo{background:#fff3c4;color:#5e4a00;font-size:14px;text-align:center;padding:6px 10px}
@@ -73,7 +73,7 @@ html.dark .ico{background:#17415a}.ico svg{width:30px;height:30px;stroke:var(--b
 .card.hot .btn:hover,.card.hot .btn:focus-visible{background:#B3EBF2;color:#08263b;filter:none}
 .cards3>a.card,.contact>a.card{display:flex;flex-direction:column}
 .cards3>a.card .go,.contact>a.card .go{margin-top:auto;padding-top:14px}
-section{padding:68px 0}h2{font-size:32px;margin:0 0 8px;color:var(--ink)}.lead{color:var(--mut);margin:0 0 30px}
+section{padding:52px 0}h2{font-size:32px;margin:0 0 8px;color:var(--ink)}.lead{color:var(--mut);margin:0 0 30px}
 .alert{background:#fff7dc;color:#5b4600;border:1px solid #f0d77a;border-left:6px solid #f2b705;border-radius:14px;padding:16px 20px;display:flex;gap:14px}
 .band{background:var(--bg)}
 .outage{display:grid;grid-template-columns:320px minmax(0,1fr);gap:28px}
@@ -137,11 +137,12 @@ html.bigcur,html.bigcur *{cursor:zoom-in}
 @media(max-width:980px){.hero .wrap{grid-template-columns:minmax(0,1fr);padding-bottom:150px}.photo{display:none}.hbtns{display:none}.acc3,.gal{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}}
 @media(max-width:600px){.acc3,.gal{grid-template-columns:minmax(0,1fr)}}
 .logo{flex:none}.logo img{width:auto;max-width:none}nav a{white-space:nowrap;padding:10px 11px}nav ul{gap:2px}.cta{white-space:nowrap}@media(max-width:1180px){nav a{padding:10px 8px;font-size:14px}#n .nav-trigger{padding:10px 8px;font-size:14px}}
+@media(min-width:981px) and (max-width:1120px){header .wrap{gap:8px}.logo img{height:48px}nav a,#n .nav-trigger{padding:10px 5px;font-size:13px}#n .nav-trigger{gap:4px}.hbtns{gap:6px}.cta{padding:10px 11px;font-size:14px}.cta.search-icon{width:44px;padding:10px}}
 
 .pagehead{background:linear-gradient(135deg,#dff3fb,#e6fbef);border-bottom:1px solid var(--line)}html.dark .pagehead{background:#0f3a55}
 .pagehead .wrap{padding-top:34px;padding-bottom:34px}.pagehead h1{margin:6px 0 6px;font-size:clamp(28px,4vw,42px);color:var(--navy)}html.dark .pagehead h1{color:#fff}.pagehead p{margin:0;color:var(--mut);max-width:46em}
 .crumbs{font-size:14px;color:var(--mut)}.crumbs a{color:var(--blue-d)}
-.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:40px;padding:44px 0 70px}
+.layout{display:grid;grid-template-columns:270px minmax(0,1fr);gap:40px;padding-top:44px;padding-bottom:56px}
 .side{position:sticky;top:104px;align-self:start}.side h2{font-size:15px;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);margin:0 0 10px}
 .side a{display:block;padding:11px 14px;border-radius:12px;text-decoration:none;color:var(--ink);font-weight:600;font-size:15px;margin-bottom:2px}.side a:hover,.side a[aria-current]{background:var(--bg);color:var(--blue-d)}
 .prose h2{font-size:26px;margin:34px 0 10px}.prose h2:first-child{margin-top:0}.prose h3{font-size:20px;margin:24px 0 6px}.prose p,.prose li{color:var(--ink);max-width:46em}
@@ -185,7 +186,7 @@ details{border:1px solid var(--line);border-radius:14px;margin:10px 0;background
 @media(max-width:800px){.ptile:nth-child(6){grid-column:auto}}
 .espa-strip .lg{max-height:72px;max-width:min(100%,420px);border-radius:6px}.ptile .lg{max-width:100%;max-height:90px;object-fit:contain;object-position:left}.ptile.main .lg{max-height:110px}.espa-box .lg{max-height:80px;max-width:100%}
 .vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.espa-home{padding:22px 0 6px;background:var(--bg)}
+.espa-home{padding:28px 0 32px;background:var(--bg)}
 .ptiles{grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;margin:0}
 .ptile{align-items:center;justify-content:center;text-align:center;border:1px solid var(--line);box-shadow:0 8px 24px rgba(8,38,59,.1);padding:18px;min-height:150px;gap:8px;transition:box-shadow .22s ease,transform .22s ease,border-color .22s ease}
 .ptile.main,.ptile.wide{grid-column:span 2;flex-direction:column;min-height:200px;border-width:1px}
@@ -266,3 +267,103 @@ details[open] summary::after{content:"−"}details>div{padding:0 20px 18px;color
 .nlist details summary{cursor:pointer}
 .flist{margin:.5rem 0 .3rem 1.1rem;padding:0;list-style:disc;font-size:.92rem}
 .flist li{display:list-item;margin:.2rem 0;border:0;padding:0;background:none;grid-template-columns:none}
+
+.ptile .lg.lg-tritsis{max-height:84px}
+
+/* Home: event cards (Διαγωνισμοί / Νέα / Διακοπές νερού) */
+.ecards{--acc:#0b6a99;--acc-bg:#e6f3fa;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:8px}
+.ecards.t-green{--acc:#0f7a4a;--acc-bg:#e5f6ec}
+.ecards.t-orange{--acc:#a8510a;--acc-bg:#fdf0e1}
+html.dark .ecards{--acc:#7fd0ef;--acc-bg:#123247}
+html.dark .ecards.t-green{--acc:#6fe0a6;--acc-bg:#123a2a}
+html.dark .ecards.t-orange{--acc:#f5b26b;--acc-bg:#3a2a16}
+.ecard{display:flex;flex-direction:column;gap:12px;padding:20px;background:var(--card);border:1px solid var(--line);border-top:4px solid var(--acc);border-radius:var(--r);text-decoration:none;color:var(--ink);box-shadow:0 8px 24px rgba(8,38,59,.08);transition:transform .2s ease,box-shadow .2s ease}
+.ecard:hover,.ecard:focus-visible{transform:translateY(-3px);box-shadow:0 14px 30px rgba(8,38,59,.18)}
+.ecard:focus-visible{outline:3px solid var(--acc);outline-offset:3px}
+.ecard .etop{display:flex;align-items:center;gap:12px}
+.ecard .cal{display:flex;flex-direction:column;align-items:center;justify-content:center;width:60px;min-width:60px;padding:7px 0;border-radius:12px;background:var(--acc-bg);color:var(--acc);line-height:1.1}
+.ecard .cal b{font-size:24px}
+.ecard .cal span{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.04em}
+.ecard .cal small{font-size:11px;font-weight:600}
+.ecard .etag{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--acc);background:var(--acc-bg);padding:4px 10px;border-radius:999px}
+.ecard h3{margin:0;font-size:17px;line-height:1.4}
+.ecard .emeta{margin-top:auto;display:flex;justify-content:space-between;align-items:center;gap:8px;padding-top:12px;border-top:1px solid var(--line);font-size:14px;color:var(--mut)}
+.ecard .ego{font-weight:700;color:var(--acc);white-space:nowrap}
+.emore{margin-top:22px}
+.ecard:first-child{grid-column:span 2}
+.ecard:first-child h3{font-size:21px}
+.ecard:first-child .cal{width:70px;min-width:70px}
+.ecard:first-child .cal b{font-size:28px}
+@media(max-width:980px){.ecards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:620px){.ecards{grid-template-columns:minmax(0,1fr)}.ecard:first-child{grid-column:auto}.ecard:first-child h3{font-size:18px}}
+@media(prefers-reduced-motion:reduce){.ecard{transition:none}.ecard:hover,.ecard:focus-visible{transform:none}}
+.sec-tint{background:linear-gradient(160deg,#e3f2fb 0%,#eef8fd 55%,#f7fcff 100%)}
+html.dark .sec-tint{background:linear-gradient(160deg,#0f2a3d 0%,#0c2132 60%,#0b1c29 100%)}
+.ecard:hover .ego,.ecard:focus-visible .ego{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
+
+/* ΕΣΠΑ 2021-2027: featured project + PDF preview */
+.pfeature{border:2px solid #144E8C;border-radius:var(--r);padding:24px 26px;box-shadow:0 10px 28px rgba(8,38,59,.1)}
+.pf-head{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:10px}
+.pf-logo{max-height:56px;width:auto}
+.pf-badge{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:#0f7a4a;background:#e5f6ec;padding:5px 12px;border-radius:999px}
+html.dark .pf-badge{color:#6fe0a6;background:#123a2a}
+.pfeature h3{font-size:22px;line-height:1.35}
+.pfeature h4{margin:22px 0 8px;font-size:18px}
+.pcard .pf-facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:16px 0}
+.pf-facts div{background:var(--bg);border-radius:12px;padding:10px 14px}
+.pf-facts dt{font-size:13px;font-weight:700;color:var(--mut)}
+.pf-facts dd{margin:2px 0 0;font-weight:700}
+.pf-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;list-style:none;padding:0;margin:12px 0}
+.pf-stats li{border:1px solid var(--line);border-radius:12px;padding:10px 14px;line-height:1.35}
+.pf-stats b{display:block;font-size:20px;color:var(--blue-d)}
+.pdfview{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:#f4f6f8}
+.pdfview iframe{display:block;width:100%;height:760px;border:0}
+.pdf-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+@media(max-width:700px){.pdfview{display:none}.pfeature{padding:18px}}
+/* Home: highlighted project in «Έργα» */
+.pfeat-home{display:flex;align-items:center;gap:18px;margin:8px 0 14px;padding:18px 20px;background:var(--card);border:2px solid #144E8C;border-radius:var(--r);text-decoration:none;color:var(--ink);box-shadow:0 8px 24px rgba(8,38,59,.1);transition:transform .2s ease,box-shadow .2s ease}
+.pfeat-home img{width:120px;height:auto;flex:none}
+.pfeat-home>span:nth-child(2){display:flex;flex-direction:column;gap:6px;flex:1}
+.pfeat-home .pf-badge{align-self:flex-start}
+.pfeat-home b{font-size:18px;line-height:1.35}
+.pfeat-home small{color:var(--mut);font-size:14px}
+.pfh-go{font-weight:700;color:var(--blue-d);white-space:nowrap}
+.pfeat-home:hover,.pfeat-home:focus-visible{transform:translateY(-3px);box-shadow:0 14px 30px rgba(8,38,59,.18)}
+.pfeat-home:hover .pfh-go,.pfeat-home:focus-visible .pfh-go{text-decoration:underline;text-decoration-thickness:2px;text-underline-offset:4px}
+@media(max-width:620px){.pfeat-home{flex-direction:column;align-items:flex-start}.pfeat-home img{width:96px}}
+@media(prefers-reduced-motion:reduce){.pfeat-home{transition:none}.pfeat-home:hover,.pfeat-home:focus-visible{transform:none}}
+/* ΕΣΠΑ 2014-2020: κάρτες έργων με PDF */
+.p1420{padding:22px 24px;box-shadow:0 8px 22px rgba(8,38,59,.07)}
+.p1420 .pf-badge{margin-bottom:8px}
+.p1420 h3{font-size:20px;line-height:1.35}
+.pdfprev{margin:14px 0 4px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.pdfprev>summary{cursor:pointer;padding:12px 16px;font-weight:700;color:var(--blue-d)}
+.pdfprev[open]>summary{border-bottom:1px solid var(--line)}
+.pdfprev .pdfview{border:0;border-radius:0 0 12px 12px}
+@media(max-width:700px){.pdfprev{display:none}}
+.pcard.p1420 .pf-facts{grid-template-columns:repeat(2,minmax(0,1fr))}
+@media(max-width:620px){.pcard.p1420 .pf-facts{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:620px){section{padding:36px 0}.layout{padding-top:28px;padding-bottom:40px}}
+/* Αρχική: carousel φωτογραφιών */
+.carousel{position:relative}
+.car-track{display:flex;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none;padding:6px 2px;border-radius:16px}
+.car-track::-webkit-scrollbar{display:none}
+.car-track:focus-visible{outline:3px solid var(--blue-d);outline-offset:4px}
+.car-track>.g{flex:0 0 calc((100% - 28px)/3);scroll-snap-align:start}
+.car-btn{position:absolute;top:50%;z-index:3;width:50px;height:50px;margin-top:-25px;display:grid;place-items:center;border:0;border-radius:50%;background:#fff;color:var(--blue-d);box-shadow:0 8px 22px rgba(8,38,59,.25);cursor:pointer;transition:background .18s ease,color .18s ease,transform .18s ease,opacity .18s ease}
+.car-btn svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.car-btn.prev{left:6px}.car-btn.next{right:6px}
+@media(min-width:1300px){.car-btn.prev{left:-24px}.car-btn.next{right:-24px}}
+.car-btn:hover,.car-btn:focus-visible{background:linear-gradient(135deg,#1685b5 0%,#0b6a99 55%,#084d78 100%);color:#fff;transform:scale(1.06)}
+.car-btn:focus-visible{outline:3px solid #fff;box-shadow:0 0 0 6px var(--blue-d)}
+.car-btn:disabled{opacity:0;pointer-events:none}
+html.dark .car-btn{background:var(--card)}
+@media(max-width:980px){.car-track>.g{flex-basis:calc((100% - 14px)/2)}}
+@media(max-width:600px){.car-track>.g{flex-basis:85%}.car-btn{width:44px;height:44px;margin-top:-22px}}
+@media(prefers-reduced-motion:reduce){.car-track{scroll-behavior:auto}.car-btn{transition:none}}
+/* Επικοινωνία: εικονίδια σε κύκλο πάνω από τα πλαίσια */
+.ccard{text-align:center}
+.ccard .cicon{display:flex;align-items:center;justify-content:center;width:76px;height:76px;margin:0 auto 16px;border-radius:50%;background:linear-gradient(120deg,#052a47 0%,#0b5d92 55%,#0aa6b8 100%);color:#fff;box-shadow:0 8px 20px rgba(5,42,71,.25)}
+.ccard .cicon i{display:flex}
+.ccard .cicon svg{width:32px;height:32px;fill:currentColor}
+html.dark .ccard .cicon{background:linear-gradient(120deg,#021725,#073b5e 60%,#07717e)}

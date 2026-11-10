@@ -56,7 +56,19 @@ function mk(tag,at,tx){var e=document.createElement(tag);for(var k in at)e.setAt
 function gitem(c,it,i){var cap=it.t||(c.label+' ('+(i+1)+')');var a=mk('a',{'class':'g',href:'photos/'+c.folder+'/'+it.n+'.jpg','data-cat':c.k,'data-cap':cap,'aria-label':'Μεγέθυνση: '+cap});a.appendChild(mk('img',{src:'photos/'+c.folder+'/thumbs/'+it.n+'.jpg',alt:it.a||cap,loading:'lazy'}));return a}
 function renderGal(){var D=window.PHOTOS||[];var g=$('#gallery');
  if(g){var tabs=$('#galtabs');var all=mk('button',{'class':'chip on','data-k':'','aria-pressed':'true',type:'button'},'Όλες ('+D.reduce(function(s,c){return s+c.items.length},0)+')');tabs.appendChild(all);D.forEach(function(c){tabs.appendChild(mk('button',{'class':'chip','data-k':c.k,'aria-pressed':'false',type:'button'},c.label+' ('+c.items.length+')'))});D.forEach(function(c){c.items.forEach(function(it,i){g.appendChild(gitem(c,it,i))})})}
- var h=$('#homegal');if(h){var f=[];D.forEach(function(c){c.items.forEach(function(it,i){if(it.p)f.push([c,it,i])})});if(f.length<3)D.forEach(function(c){if(f.length<3&&c.items.length&&!c.items[0].p)f.push([c,c.items[0],0])});h.innerHTML='';f.slice(0,3).forEach(function(x){h.appendChild(gitem(x[0],x[1],x[2]))})}}
+ var h=$('#homegal');if(h){var f=[],seen={};function add(c,it,i){var k=c.folder+'/'+it.n;if(!seen[k]){seen[k]=1;f.push([c,it,i])}}
+  D.forEach(function(c){c.items.forEach(function(it,i){if(it.p)add(c,it,i)})});
+  D.forEach(function(c){c.items.slice(0,3).forEach(function(it,i){add(c,it,i)})});
+  h.innerHTML='';f.slice(0,15).forEach(function(x){h.appendChild(gitem(x[0],x[1],x[2]))});initCarousel(h)}}
+/* Carousel φωτογραφιών αρχικής: βελάκια, πληκτρολόγιο, swipe */
+function initCarousel(tr){var box=tr.closest('.carousel');if(!box)return;var pv=$('.car-btn.prev',box),nx=$('.car-btn.next',box);
+ var rm=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+ function step(d){var it=tr.firstElementChild;var w=it?it.getBoundingClientRect().width+14:tr.clientWidth;var per=Math.max(1,Math.round(tr.clientWidth/w));tr.scrollBy({left:d*w*per,behavior:rm?'auto':'smooth'})}
+ function upd(){pv.disabled=tr.scrollLeft<=2;nx.disabled=tr.scrollLeft+tr.clientWidth>=tr.scrollWidth-2}
+ pv.onclick=function(){step(-1)};nx.onclick=function(){step(1)};
+ tr.addEventListener('scroll',upd,{passive:true});window.addEventListener('resize',upd);
+ tr.addEventListener('keydown',function(e){if(e.key==='ArrowLeft'){e.preventDefault();step(-1)}if(e.key==='ArrowRight'){e.preventDefault();step(1)}});
+ upd();setTimeout(upd,300)}
 document.addEventListener('DOMContentLoaded',function(){
  var lb=mk('div',{id:'lb',role:'dialog','aria-modal':'true','aria-label':'Μεγέθυνση φωτογραφίας'});
  lb.innerHTML='<img alt=""><p></p><div class="bar"><button type="button" id="lbp" aria-label="Προηγούμενη φωτογραφία">←</button><button type="button" id="lbc">Κλείσιμο</button><button type="button" id="lbn" aria-label="Επόμενη φωτογραφία">→</button></div>';
@@ -74,3 +86,22 @@ document.addEventListener('DOMContentLoaded',function(){var d=document.getElemen
  function done(){try{sessionStorage.setItem(k,'1')}catch(e){}d.close()}
  setTimeout(function(){try{d.showModal()}catch(e){}},1200);
  document.getElementById('pclose').onclick=done;d.addEventListener('click',function(e){if(e.target===d)done()});d.addEventListener('cancel',function(){try{sessionStorage.setItem(k,'1')}catch(e){}})});
+
+/* Προεπισκόπηση PDF: φορτώνει το PDF μόνο όταν ανοίξει το πλαίσιο */
+document.addEventListener('toggle',function(e){var d=e.target;if(!d.classList||!d.classList.contains('pdfprev')||!d.open)return;var f=$('iframe[data-src]',d);if(f){f.src=f.getAttribute('data-src');f.removeAttribute('data-src')}},true);
+
+/* Πλαϊνό μενού: δείχνει επιλεγμένη την ενότητα της σελίδας (από #, κλικ ή scroll) */
+document.addEventListener('DOMContentLoaded',function(){
+ var side=$('.side');if(!side)return;
+ var page=(location.pathname.split('/').pop()||'index.html');
+ var items=$$('a[href*="#"]',side).map(function(a){var h=a.getAttribute('href').split('#');return {a:a,page:h[0]||page,el:document.getElementById(h[1])}}).filter(function(x){return x.page===page&&x.el});
+ if(!items.length)return;
+ var base=$('a[aria-current="page"]',side),cur,lock=0;
+ function mark(a){if(a===cur)return;cur=a;$$('a[aria-current]',side).forEach(function(x){x.removeAttribute('aria-current')});var t=a||base;if(t)t.setAttribute('aria-current',a?'location':'page')}
+ function spy(){if(Date.now()<lock)return;var off=140,pick=null,atEnd=window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-4;
+  items.forEach(function(x){var top=x.el.getBoundingClientRect().top;if(top<=off||(atEnd&&top<window.innerHeight))pick=x.a});mark(pick)}
+ items.forEach(function(x){x.a.addEventListener('click',function(){mark(x.a);lock=Date.now()+900})});
+ window.addEventListener('scroll',spy,{passive:true});
+ window.addEventListener('hashchange',function(){var h=location.hash.slice(1);items.forEach(function(x){if(x.el.id===h)mark(x.a)})});
+ var h=location.hash.slice(1),hit=null;items.forEach(function(x){if(x.el.id===h)hit=x.a});if(hit)mark(hit);else spy();
+});
