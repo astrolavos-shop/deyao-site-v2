@@ -105,3 +105,23 @@ document.addEventListener('DOMContentLoaded',function(){
  window.addEventListener('hashchange',function(){var h=location.hash.slice(1);items.forEach(function(x){if(x.el.id===h)mark(x.a)})});
  var h=location.hash.slice(1),hit=null;items.forEach(function(x){if(x.el.id===h)hit=x.a});if(hit)mark(hit);else spy();
 });
+
+/* Εφέ εμφάνισης κατά το scroll (σέβεται «απενεργοποίηση κινήσεων» και prefers-reduced-motion) */
+document.addEventListener('DOMContentLoaded',function(){
+ var h=document.documentElement;
+ if(!('IntersectionObserver' in window)||h.classList.contains('noanim')||(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches))return;
+ var sel='main section h2,main .lead,.ecard,.quick .card,.contact>.card,.cards3>.card,.cards2>.card,.acc3>.card,.ptile,.pcard,.pfeat-home,main .doc,.nlist>li,.car-track,.eco,main .alert,.espa-box,.map,.prose>h2,.tw';
+ var els=$$(sel).filter(function(e){return e.getBoundingClientRect().top>window.innerHeight*0.92});
+ if(!els.length)return;
+ els.forEach(function(e){var p=e.parentElement,i=p?Array.prototype.indexOf.call(p.children,e):0;e.style.transitionDelay=(i%6)*70+'ms';e.classList.add('rv')});
+ function done(e){e.classList.remove('rv','in');e.style.transitionDelay=''}
+ function show(e){if(e.classList.contains('in')||!e.classList.contains('rv'))return;e.classList.add('in');setTimeout(function(){done(e)},1100)}
+ var io=new IntersectionObserver(function(list){list.forEach(function(en){if(en.isIntersecting){io.unobserve(en.target);show(en.target)}})},{rootMargin:'0px 0px -8% 0px',threshold:0.08});
+ els.forEach(function(e){io.observe(e)});
+ // δεύτερος έλεγχος σε scroll/resize, ώστε τίποτα να μη μείνει κρυφό
+ function check(){var lim=window.innerHeight*0.95;$$('.rv:not(.in)').forEach(function(e){if(e.getBoundingClientRect().top<lim)show(e)})}
+ var raf=0;function sched(){if(!raf)raf=requestAnimationFrame(function(){raf=0;check()})}
+ window.addEventListener('scroll',function(){sched();clearTimeout(window.__rvT);window.__rvT=setTimeout(check,150)},{passive:true});
+ window.addEventListener('resize',sched);
+ new MutationObserver(function(){if(h.classList.contains('noanim')){io.disconnect();$$('.rv').forEach(done)}}).observe(h,{attributes:true,attributeFilter:['class']});
+});
