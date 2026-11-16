@@ -153,3 +153,20 @@ document.querySelectorAll('[role="tablist"]').forEach(function(list){
   var h=location.hash&&document.getElementById(location.hash.slice(1));
   if(h){var t=tabs.find(function(x){return x.getAttribute('aria-controls')===h.id});if(t)select(t);}
 });
+
+// Εκπαιδευτικά: counters and animated bars.
+(function(){
+  var edu=document.querySelector('.edu');if(!edu)return;
+  var h=document.documentElement;
+  var still=h.classList.contains('noanim')||(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)||!('IntersectionObserver' in window);
+  if(!still){
+    edu.classList.add('pre');
+    var nums=[].slice.call(edu.querySelectorAll('[data-count]'));nums.forEach(function(n){n.textContent='0'});
+    var io=new IntersectionObserver(function(es){es.forEach(function(e){if(!e.isIntersecting)return;io.unobserve(e.target);
+      if(e.target.hasAttribute('data-count')){var to=+e.target.dataset.count,t0=null;(function step(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/1400);e.target.textContent=Math.round(to*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(step)})(performance.now())}
+      else edu.classList.remove('pre');
+    })},{threshold:.4});
+    nums.forEach(function(n){io.observe(n)});
+    var bar=edu.querySelector('.edu-bar');if(bar)io.observe(bar);
+  }
+})();

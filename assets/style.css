@@ -505,3 +505,61 @@ html.dark .anal-list a:hover{background:#0d2a3d}
 .prose .anal-panel h3{margin:14px 0 4px;font-size:20px}
 .prose .anal-panel h4{font-size:16px;margin:16px 0 8px}
 @media(max-width:620px){.anal-panel{padding:4px 12px 14px}}
+/* Bank table (Τρόποι εξόφλησης) */
+.tbl.banks .c{text-align:center}
+.tbl.banks .yes{color:#0a7d4f;font-weight:900;font-size:18px}
+.tbl.banks .no{color:var(--mut)}
+.tbl.banks tbody td:first-child{color:var(--mut);width:48px}
+@media(max-width:620px){
+ .tbl.banks tbody td:first-child{display:none}
+ .tbl.banks td.c{display:flex;justify-content:space-between;text-align:left;border-top:1px dashed var(--line)!important}
+ .tbl.banks td.c::before{content:attr(data-label);color:var(--mut);font-size:14px}
+}
+/* Εκπαιδευτικά: interactive page */
+.edu-hero{display:flex;align-items:center;gap:24px;padding:22px 26px;border-radius:18px;background:linear-gradient(120deg,#052a47 0%,#0b5d92 55%,#0b6f84 100%);color:#fff;margin:14px 0 8px}
+.edu-hero p{margin:0;font-size:19px;line-height:1.5;color:#fff}
+.edu-globe{position:relative;flex:none;width:120px;height:120px;display:grid;place-items:center}
+.edu-globe svg{width:120px;height:120px;fill:rgba(255,255,255,.18)}
+.edu-num{position:absolute;font-size:38px;font-weight:900;color:#5ff0b6}
+.prose .edu h3,.edu h3{margin-top:28px}
+.edu-bar{display:flex;height:34px;border-radius:999px;overflow:hidden;background:var(--line);margin:12px 0}
+.edu-bar span{display:block;height:100%;width:var(--w);transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.edu-bar .s1,.edu-legend i.s1{background:#0b5d92}
+.edu-bar .s2,.edu-legend i.s2{background:#9fd8ee}
+.edu-bar .s3,.edu-legend i.s3{background:#16c98d}
+.edu-bar .s3{min-width:8px}
+.edu.pre .edu-bar span,.edu.pre .edu-grow .fill{width:0}
+.edu-legend{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+.edu-legend li{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);border-radius:12px;background:var(--card);margin:0}
+.edu-legend i{width:12px;height:12px;border-radius:50%;flex:none}
+.edu-legend svg{width:20px;height:20px;fill:var(--blue-d);flex:none}
+.edu-legend li:last-child{border-color:#16c98d;box-shadow:0 0 0 2px rgba(22,201,141,.18)}
+.edu-grow{display:grid;gap:12px;margin:10px 0 6px}
+.edu-grow .edu-row{display:grid;grid-template-columns:220px 1fr 48px;align-items:center;gap:12px}
+.edu-grow .lbl{display:flex;align-items:center;gap:8px;font-weight:700}
+.edu-grow .lbl svg{width:20px;height:20px;fill:var(--blue-d)}
+.edu-grow .track{height:22px;border-radius:999px;background:var(--line);overflow:hidden}
+.edu-grow .fill{display:block;height:100%;width:var(--w);border-radius:999px;transition:width 1.4s cubic-bezier(.2,.8,.2,1)}
+.edu-grow .f2{background:#9fd8ee}.edu-grow .f6{background:linear-gradient(90deg,#0b5d92,#16c98d)}
+.edu-grow b{font-size:22px;color:var(--blue-d)}
+.edu-facts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:22px 0 4px}
+.edu-fact{padding:18px;border:1px solid var(--line);border-radius:16px;background:var(--card);box-shadow:0 10px 24px rgba(8,38,59,.08)}
+.edu-fact p{margin:10px 0 0;font-size:15.5px}
+.edu .cicon{display:flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:50%;background:linear-gradient(120deg,#052a47 0%,#0b5d92 55%,#0b6f84 100%);color:#fff;flex:none}
+.edu .cicon svg{width:24px;height:24px;fill:currentColor}
+.edu-quote{margin:26px 0 12px;padding:22px 26px;border-left:6px solid #16c98d;border-radius:0 16px 16px 0;background:rgba(110,193,228,.12);font-size:20px;font-weight:700;line-height:1.5;color:var(--ink)}
+@media(max-width:620px){
+ .edu-hero{flex-direction:column;text-align:center;gap:6px;padding:18px}
+ .edu-globe,.edu-globe svg{width:96px;height:96px}.edu-num{font-size:30px}
+ .edu-legend,.edu-facts{grid-template-columns:1fr}
+ .edu-grow .edu-row{grid-template-columns:1fr 40px}.edu-grow .lbl{grid-column:1/-1}
+.edu .cicon{width:42px;height:42px}
+}
+.tbl.banks tbody th{text-transform:none;letter-spacing:0;font-size:15px;color:var(--ink)}
+
+.edu-daily{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin:12px 0}
+.edu-day{text-align:center;padding:22px 18px;border:1px solid var(--line);border-radius:16px;background:var(--card);box-shadow:0 10px 24px rgba(8,38,59,.08)}
+.edu-day .cicon{margin:0 auto 10px;width:60px;height:60px}
+.edu-day b{display:block;font-size:30px;font-weight:900;color:var(--blue-d)}
+.edu-day p{margin:6px 0 0;font-size:15.5px}
+@media(max-width:620px){.edu-daily{grid-template-columns:1fr}}
