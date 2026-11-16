@@ -125,3 +125,31 @@ document.addEventListener('DOMContentLoaded',function(){
  window.addEventListener('resize',sched);
  new MutationObserver(function(){if(h.classList.contains('noanim')){io.disconnect();$$('.rv').forEach(done)}}).observe(h,{attributes:true,attributeFilter:['class']});
 });
+
+// Open a <details> when a link (e.g. year chip) points to it, or on load with its hash.
+(function(){
+  function openTarget(hash){
+    if(!hash||hash.length<2)return;
+    var el=document.getElementById(decodeURIComponent(hash.slice(1)));
+    if(el&&el.tagName==='DETAILS'){el.open=true;var s=el.querySelector('summary');if(s)s.focus({preventScroll:true});}
+  }
+  document.addEventListener('click',function(e){
+    var a=e.target.closest&&e.target.closest('a[href^="#"]');if(a)openTarget(a.getAttribute('href'));
+  });
+  window.addEventListener('hashchange',function(){openTarget(location.hash)});
+  if(document.readyState!=='loading')openTarget(location.hash);else document.addEventListener('DOMContentLoaded',function(){openTarget(location.hash)});
+})();
+
+// Year tabs: one panel visible at a time (e.g. water analyses).
+document.querySelectorAll('[role="tablist"]').forEach(function(list){
+  var tabs=[].slice.call(list.querySelectorAll('[role="tab"]'));
+  function select(t,focus){tabs.forEach(function(x){var on=x===t;x.setAttribute('aria-selected',on);x.tabIndex=on?0:-1;var p=document.getElementById(x.getAttribute('aria-controls'));if(p)p.hidden=!on;});if(focus)t.focus();}
+  tabs.forEach(function(t,i){
+    t.addEventListener('click',function(){select(t)});
+    t.addEventListener('keydown',function(e){var k=e.key,j=null;
+      if(k==='ArrowRight')j=(i+1)%tabs.length;else if(k==='ArrowLeft')j=(i-1+tabs.length)%tabs.length;else if(k==='Home')j=0;else if(k==='End')j=tabs.length-1;
+      if(j!==null){e.preventDefault();select(tabs[j],true);}});
+  });
+  var h=location.hash&&document.getElementById(location.hash.slice(1));
+  if(h){var t=tabs.find(function(x){return x.getAttribute('aria-controls')===h.id});if(t)select(t);}
+});

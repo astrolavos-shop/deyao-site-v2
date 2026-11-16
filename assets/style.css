@@ -477,3 +477,31 @@ html.dark .ccard .cicon{background:linear-gradient(120deg,#021725,#073b5e 60%,#0
 .side a.sub::before{content:"";position:absolute;left:16px;top:50%;width:7px;height:2px;background:var(--line)}
 #n .submenu li.sub a{padding-left:28px;font-weight:500;font-size:14px}
 @media(max-width:620px){.side a.sub{padding-left:14px}.side a.sub::before{display:none}}
+/* Service card icons (same gradient circle as contact cards) */
+.cards3 .card .cicon{display:flex;align-items:center;justify-content:center;width:64px;height:64px;margin:0 0 16px;border-radius:50%;background:linear-gradient(120deg,#052a47 0%,#0b5d92 55%,#0b6f84 100%);color:#fff;box-shadow:0 8px 20px rgba(5,42,71,.25);flex:none}
+.cards3 .card .cicon svg{width:28px;height:28px;fill:currentColor}
+.prose .cards3 .card .cicon+h3{margin-top:0}
+html.dark .cards3 .card .cicon{background:linear-gradient(120deg,#021725,#073b5e 60%,#07717e)}
+@media(max-width:620px){.cards3 .card .cicon{width:48px;height:48px;margin-bottom:10px}.cards3 .card .cicon svg{width:22px;height:22px}}
+.org.org-sm{max-width:620px}
+/* Water-quality analyses per year */
+.anal-body{padding:4px 18px 16px}
+.prose .anal-body h3{font-size:16px;margin:16px 0 8px}
+.anal-list{list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.anal-list li{margin:0}
+.anal-list a{display:flex;align-items:center;gap:8px;padding:8px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg,#fff);text-decoration:none;color:var(--blue-d);font-weight:600;font-size:15px}
+.anal-list a::before{content:"PDF";font-size:10px;font-weight:800;color:#fff;background:#b3261e;border-radius:4px;padding:2px 4px;flex:none}
+.anal-list a:hover,.anal-list a:focus-visible{border-color:#0b5d92;background:#eef6fb}
+.anal-list li.multi{grid-column:span 2;display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-weight:600;font-size:15px}
+.anal-list li.multi a{flex:1}
+html.dark .anal-list a:hover{background:#0d2a3d}
+.yrs+.fin-year{margin-top:16px}
+@media(max-width:620px){.anal-body{padding:2px 12px 12px}.anal-list{grid-template-columns:1fr 1fr}.anal-list li.multi{grid-column:1/-1}}
+/* Year tabs for analyses (replace collapsible list) */
+.yrs[role=tablist] .chip{cursor:pointer;font:inherit;font-weight:800}
+.yrs[role=tablist] .chip[aria-selected="true"]{background:linear-gradient(135deg,#13739f 0%,#0b6a99 55%,#084d78 100%);border-color:#084d78;color:#fff}
+.anal-panel{margin-top:16px;padding:6px 20px 20px;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.anal-panel[hidden]{display:none}
+.prose .anal-panel h3{margin:14px 0 4px;font-size:20px}
+.prose .anal-panel h4{font-size:16px;margin:16px 0 8px}
+@media(max-width:620px){.anal-panel{padding:4px 12px 14px}}
