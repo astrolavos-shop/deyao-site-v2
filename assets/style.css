@@ -459,3 +459,21 @@ html.dark .ccard .cicon{background:linear-gradient(120deg,#021725,#073b5e 60%,#0
 @media print{.rv{opacity:1!important;transform:none!important}}
 .search:focus-within{outline:3px solid #f2b705;outline-offset:3px}
 @media(max-width:360px){.tools-info{grid-template-columns:minmax(0,1fr)}.tools-item{white-space:normal}.tools-links a{white-space:normal}}
+/* Οικονομικά & Οργανόγραμμα */
+.fin-year{margin:10px 0;border:1px solid var(--line);border-radius:14px;background:var(--card)}
+.fin-year>summary{cursor:pointer;padding:14px 18px;font-weight:700;color:var(--blue-d)}
+.fin-year[open]>summary{border-bottom:1px solid var(--line)}
+.fin-year>.tw{margin:14px}
+.tbl.fin td.num,.tbl.fin th.num{text-align:right;white-space:nowrap}
+.tbl.fin tr.tot td{font-weight:800;background:var(--bg)}
+.org{margin:14px 0}
+.org img{display:block;width:100%;height:auto;border:1px solid var(--line);border-radius:14px;background:#fff}
+.org figcaption{font-size:14px;color:var(--mut);margin-top:6px}
+.org-text>summary{cursor:pointer;font-weight:700;color:var(--blue-d);padding:8px 0}
+.photo img.hero-img{object-position:72% center}
+.tbl.fin tbody th{text-align:left;font-weight:800;padding:10px 12px;background:none}
+/* Υποενότητες (Οικονομικά → Προϋπολογισμοί / Ισολογισμοί) */
+.side a.sub{padding-left:30px;font-weight:500;font-size:14px;position:relative}
+.side a.sub::before{content:"";position:absolute;left:16px;top:50%;width:7px;height:2px;background:var(--line)}
+#n .submenu li.sub a{padding-left:28px;font-weight:500;font-size:14px}
+@media(max-width:620px){.side a.sub{padding-left:14px}.side a.sub::before{display:none}}
