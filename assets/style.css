@@ -563,3 +563,4 @@ html.dark .anal-list a:hover{background:#0d2a3d}
 .edu-day b{display:block;font-size:30px;font-weight:900;color:var(--blue-d)}
 .edu-day p{margin:6px 0 0;font-size:15.5px}
 @media(max-width:620px){.edu-daily{grid-template-columns:1fr}}
+.cards3 .card.ccard .cicon{margin:0 auto 16px;width:76px;height:76px}.cards3 .card.ccard .cicon svg{width:32px;height:32px}@media(max-width:620px){.cards3 .card.ccard .cicon{width:56px;height:56px;margin-bottom:10px}.cards3 .card.ccard .cicon svg{width:24px;height:24px}}
