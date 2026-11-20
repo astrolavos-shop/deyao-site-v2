@@ -199,3 +199,10 @@ document.querySelectorAll('[role="tablist"]').forEach(function(list){
   function init(){addBtn();if(EN)loadGT()}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
 })();
+
+/* Σταθερές αγγλικές αποδόσεις όπου η αυτόματη μετάφραση κάνει λάθος (data-en) */
+(function(){
+  if(!/(^|;\s*)googtrans=\/el\/en(;|$)/.test(document.cookie))return;
+  function fix(){document.querySelectorAll('[data-en]').forEach(function(el){el.textContent=el.getAttribute('data-en');el.classList.add('notranslate');el.setAttribute('translate','no');el.lang='en'})}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix);else fix();
+})();
