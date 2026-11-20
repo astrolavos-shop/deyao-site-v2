@@ -564,3 +564,14 @@ html.dark .anal-list a:hover{background:#0d2a3d}
 .edu-day p{margin:6px 0 0;font-size:15.5px}
 @media(max-width:620px){.edu-daily{grid-template-columns:1fr}}
 .cards3 .card.ccard .cicon{margin:0 auto 16px;width:76px;height:76px}.cards3 .card.ccard .cicon svg{width:32px;height:32px}@media(max-width:620px){.cards3 .card.ccard .cicon{width:56px;height:56px;margin-bottom:10px}.cards3 .card.ccard .cicon svg{width:24px;height:24px}}
+/* Κουμπί εναλλαγής γλώσσας ΕΛ / EN */
+.cta.lang-toggle{justify-content:center;min-width:56px;padding:11px 12px;border:0;cursor:pointer;font:inherit;font-weight:800;font-size:15px;letter-spacing:.04em;background:#f2f9fd;color:#0A0A6E}
+.cta.lang-toggle:hover,.cta.lang-toggle:focus-visible{transform:translateY(-2px);background:#e4f2fb;box-shadow:0 8px 18px rgba(8,38,59,.16)}
+.cta.lang-toggle.floating{position:fixed;top:12px;right:12px;z-index:1000}
+@media(min-width:981px) and (max-width:1120px){.cta.lang-toggle{min-width:44px;padding:10px 8px;font-size:14px}}
+@media(max-width:980px){.hbtns .cta.lang-toggle{flex:0 0 56px;width:56px}}
+@media(prefers-reduced-motion:reduce){.cta.lang-toggle:hover,.cta.lang-toggle:focus-visible{transform:none}}
+/* Απόκρυψη της μπάρας/αναδυόμενων της Google Μετάφρασης */
+body{top:0!important}
+iframe.skiptranslate,.goog-te-banner-frame,#goog-gt-tt,.goog-te-balloon-frame,.VIpgJd-ZVi9od-ORHb-OEVmcd,.VIpgJd-ZVi9od-aZ2wEe-wOHMyf{display:none!important}
+.goog-text-highlight{background:none!important;box-shadow:none!important}
