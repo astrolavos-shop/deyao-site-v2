@@ -206,3 +206,26 @@ document.querySelectorAll('[role="tablist"]').forEach(function(list){
   function fix(){document.querySelectorAll('[data-en]').forEach(function(el){el.textContent=el.getAttribute('data-en');el.classList.add('notranslate');el.setAttribute('translate','no');el.lang='en'})}
   if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix);else fix();
 })();
+
+/* Αγγλικά: σωστοί όροι μενού και σημείωση για τη φόρμα SmartVille */
+(function(){
+  if(!/(^|;\s*)googtrans=\/el\/en(;|$)/.test(document.cookie))return;
+  var T={'Βλάβη':'Report a fault','Επικοινωνία':'Contact','Διαγωνισμοί':'Tenders','Εξυπηρέτηση':'Customer service','Δήλωση βλάβης':'Report a fault'};
+  function run(){
+    document.querySelectorAll('header a, header button, h1, .crumbs').forEach(function(el){
+      el.childNodes.forEach(function(n){
+        if(n.nodeType!==3)return;var k=n.nodeValue.trim();
+        if(T[k]){n.nodeValue=n.nodeValue.replace(k,T[k]);el.classList.add('notranslate');el.setAttribute('translate','no')}
+      });
+    });
+    var f=document.querySelector('iframe[src*="smartville"]');
+    if(f&&!document.getElementById('sv-en')){
+      var p=document.createElement('div');p.id='sv-en';p.className='note notranslate';p.setAttribute('translate','no');p.lang='en';
+      p.innerHTML='The online fault report form below is provided by SmartVille and is available in Greek only. '+
+        'You can also report a fault by phone, 24 hours a day: water supply <a href="tel:+306946281040">6946281040</a>, '+
+        'sewerage <a href="tel:+306947422763">6947422763</a>.';
+      f.parentNode.insertBefore(p,f);
+    }
+  }
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();
+})();
