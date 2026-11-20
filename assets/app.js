@@ -191,7 +191,6 @@ document.querySelectorAll('[role="tablist"]').forEach(function(list){
     b.lang=EN?'el':'en';
     b.textContent=EN?'ΕΛ':'EN';
     b.setAttribute('aria-label',EN?'Ελληνικά – επιστροφή στο πρωτότυπο κείμενο':'English – automatic translation');
-    b.title=EN?'Ελληνικά':'English (automatic translation)';
     b.onclick=function(){setCk(EN?'':'/el/en');location.reload()};
     var wrap=document.querySelector('.hbtns'),srch=wrap&&wrap.querySelector('.search-icon');
     if(wrap)wrap.insertBefore(b,srch||null);
