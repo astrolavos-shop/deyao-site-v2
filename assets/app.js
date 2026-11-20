@@ -170,3 +170,33 @@ document.querySelectorAll('[role="tablist"]').forEach(function(list){
     var bar=edu.querySelector('.edu-bar');if(bar)io.observe(bar);
   }
 })();
+/* Εναλλαγή γλώσσας ΕΛ / EN με αυτόματη μετάφραση (Google Translate) */
+(function(){
+  var EN=/(^|;\s*)googtrans=\/el\/en(;|$)/.test(document.cookie);
+  function setCk(v){
+    var h=location.hostname,parts=h.split('.'),doms=['',h,'.'+h];
+    if(parts.length>2)doms.push('.'+parts.slice(-2).join('.'));
+    doms.forEach(function(d){
+      document.cookie='googtrans='+(v||'')+';path=/'+(d?';domain='+d:'')+(v?'':';expires=Thu, 01 Jan 1970 00:00:00 GMT');
+    });
+  }
+  function loadGT(){
+    var box=document.createElement('div');box.id='gt-el';box.hidden=true;document.body.appendChild(box);
+    window.gtInit=function(){new google.translate.TranslateElement({pageLanguage:'el',includedLanguages:'en',autoDisplay:false},'gt-el')};
+    var s=document.createElement('script');s.src='https://translate.google.com/translate_a/element.js?cb=gtInit';s.async=true;document.body.appendChild(s);
+  }
+  function addBtn(){
+    var b=document.createElement('button');
+    b.type='button';b.className='cta lang-toggle notranslate';b.setAttribute('translate','no');
+    b.lang=EN?'el':'en';
+    b.textContent=EN?'ΕΛ':'EN';
+    b.setAttribute('aria-label',EN?'Ελληνικά – επιστροφή στο πρωτότυπο κείμενο':'English – automatic translation');
+    b.title=EN?'Ελληνικά':'English (automatic translation)';
+    b.onclick=function(){setCk(EN?'':'/el/en');location.reload()};
+    var wrap=document.querySelector('.hbtns'),srch=wrap&&wrap.querySelector('.search-icon');
+    if(wrap)wrap.insertBefore(b,srch||null);
+    else{b.classList.add('floating');document.body.appendChild(b)}
+  }
+  function init(){addBtn();if(EN)loadGT()}
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init();
+})();
