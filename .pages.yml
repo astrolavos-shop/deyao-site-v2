@@ -1,0 +1,83 @@
+# Ρύθμιση του Pages CMS (app.pagescms.org) για το deyao.gr
+# Κάθε ενότητα είναι μια λίστα σε αρχείο data/*.json.
+# Τα PDF που ανεβαίνουν από το CMS αποθηκεύονται στο uploads/cms/.
+
+media:
+  input: uploads/cms
+  output: /uploads/cms
+  extensions: [pdf, doc, docx, xls, xlsx, jpg, jpeg, png]
+
+content:
+  - name: apofaseis
+    label: Αποφάσεις ΔΣ
+    type: file
+    path: data/apofaseis.json
+    format: json
+    list: true
+    fields:
+      - { name: arithmos, label: Αριθμός απόφασης, type: string, required: true }
+      - { name: imerominia, label: Ημερομηνία, type: date, required: true }
+      - { name: thema, label: Θέμα, type: text, required: true }
+      - { name: ada, label: ΑΔΑ (Διαύγεια), type: string }
+      - { name: pdf, label: Αρχείο PDF, type: file }
+
+  - name: diakopes
+    label: Διακοπές νερού
+    type: file
+    path: data/diakopes.json
+    format: json
+    list: true
+    fields:
+      - { name: imerominia, label: Ημερομηνία, type: date, required: true }
+      - { name: ores, label: "Ώρες (π.χ. 08:00 – 14:00)", type: string }
+      - name: katastasi
+        label: Κατάσταση
+        type: select
+        required: true
+        options: { values: [Προγραμματισμένη, Σε εξέλιξη, Ολοκληρώθηκε] }
+      - { name: perioxes, label: Περιοχές / οδοί, type: string, required: true }
+      - { name: keimeno, label: Περιγραφή, type: text }
+
+  - name: anakoinoseis
+    label: Ανακοινώσεις / Νέα
+    type: file
+    path: data/anakoinoseis.json
+    format: json
+    list: true
+    fields:
+      - { name: titlos, label: Τίτλος, type: string, required: true }
+      - { name: imerominia, label: Ημερομηνία, type: date, required: true }
+      - name: katigoria
+        label: Κατηγορία
+        type: select
+        options: { values: [Ανακοίνωση, Δελτίο Τύπου, Νέα] }
+      - { name: keimeno, label: Κείμενο, type: rich-text }
+      - { name: synimmena, label: Συνημμένα, type: file, list: true }
+
+  - name: diagonismoi
+    label: Διαγωνισμοί
+    type: file
+    path: data/diagonismoi.json
+    format: json
+    list: true
+    fields:
+      - { name: titlos, label: Τίτλος, type: string, required: true }
+      - { name: imerominia, label: Ημερομηνία, type: date, required: true }
+      - { name: kodikos, label: "Αριθμός ΚΗΜΔΗΣ / ΕΣΗΔΗΣ", type: string }
+      - { name: keimeno, label: Περιγραφή, type: text }
+      - { name: synimmena, label: Συνημμένα, type: file, list: true }
+
+  - name: programmata
+    label: Επενδυτικά / τεχνικά προγράμματα, οικονομικά
+    type: file
+    path: data/programmata.json
+    format: json
+    list: true
+    fields:
+      - { name: titlos, label: Τίτλος, type: string, required: true }
+      - { name: etos, label: Έτος, type: number, required: true }
+      - name: eidos
+        label: Είδος
+        type: select
+        options: { values: [Επενδυτικό πρόγραμμα, Τεχνικό πρόγραμμα, Προϋπολογισμός, Ισολογισμός, Άλλο] }
+      - { name: pdf, label: Αρχείο PDF, type: file }
