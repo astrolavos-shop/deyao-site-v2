@@ -1,6 +1,7 @@
 /* Εμφάνιση περιεχομένου από το Pages CMS (data/*.json).
    Χρήση σε σελίδα: <div data-cms="apofaseis"></div> και <script src="/assets/cms.js"></script>
-   Προαιρετικά data-limit="5" για τις πιο πρόσφατες μόνο. */
+   Προαιρετικά data-limit="5" για τις πιο πρόσφατες μόνο,
+   data-programma="ΕΣΠΑ 2021-2027" (programmata) και data-eidos="Ισολογισμός" (programmata, oikonomika) για φιλτράρισμα. */
 (function () {
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); }
   function gr(d) { var p = String(d || '').slice(0, 10).split('-'); return p.length === 3 ? p[2] + '/' + p[1] + '/' + p[0] : esc(d); }
@@ -32,13 +33,16 @@
       var b = (x.kodikos ? '<p>' + esc(x.kodikos) + '</p>' : '') + (x.keimeno ? '<p>' + esc(x.keimeno) + '</p>' : '') + (f ? '<ul class="flist">' + f + '</ul>' : '');
       return li(x.imerominia, 'Διαγωνισμός', esc(x.titlos), b);
     },
-    programmata: function (x) { return doc(x.pdf, x.titlos + ' (' + x.etos + ')'); }
+    programmata: function (x) { return doc(x.pdf, x.titlos + ' (' + x.etos + ')' + (x.programma ? ' · ' + x.programma : '')); },
+    oikonomika: function (x) { return doc(x.pdf, x.titlos + ' (' + x.etos + ')'); }
   };
-  var LIST = {diakopes: 'div', programmata: 'div'};
+  var LIST = {diakopes: 'div', programmata: 'div', oikonomika: 'div'};
   document.querySelectorAll('[data-cms]').forEach(function (el) {
     var k = el.getAttribute('data-cms'); if (!R[k]) return;
     fetch('/data/' + k + '.json', {cache: 'no-cache'}).then(function (r) { return r.json(); }).then(function (l) {
       l = (l || []).slice().sort(function (a, b) { return String(b.imerominia || b.etos).localeCompare(String(a.imerominia || a.etos)); });
+      var fp = el.getAttribute('data-programma'); if (fp) l = l.filter(function (x) { return x.programma === fp; });
+      var fe = el.getAttribute('data-eidos'); if (fe) l = l.filter(function (x) { return x.eidos === fe; });
       var n = parseInt(el.getAttribute('data-limit'), 10); if (n) l = l.slice(0, n);
       if (!l.length) { el.innerHTML = '<p>Δεν υπάρχουν καταχωρίσεις.</p>'; return; }
       var html = l.map(R[k]).join('');
