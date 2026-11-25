@@ -3,6 +3,7 @@
    Προαιρετικά data-limit="5" για τις πιο πρόσφατες μόνο,
    data-programma="ΕΣΠΑ 2021-2027" (programmata) και data-eidos="Ισολογισμός" (programmata, oikonomika) για φιλτράρισμα,
    data-programma δέχεται και πολλά με | (π.χ. "ΕΣΠΑ 2021-2027|ΠΕΚΑ 2021-2027"), data-title: επικεφαλίδα που εμφανίζεται μόνο αν υπάρχουν καταχωρίσεις,
+   data-into="gallery": τις φωτογραφίες τις βάζει στην υπάρχουσα συλλογή (fotografiko-yliko.html),
    data-quiet: χωρίς μήνυμα όταν δεν υπάρχουν καταχωρίσεις (για σελίδες με ήδη υπάρχουσα λίστα). */
 (function () {
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); }
@@ -14,6 +15,14 @@
   function li(date, pill, title, body) {
     return '<li><time datetime="' + esc(String(date).slice(0, 10)) + '">' + gr(date) + '</time>' + (pill ? '<span class="pill">' + esc(pill) + '</span>' : '') +
       '<span class="tt">' + (body ? '<details><summary>' + title + '</summary>' + body + '</details>' : title) + '</span></li>';
+  }
+  var CAT = {'Δεξαμενές νερού της ΔΕΥΑ Ορεστιάδας': 'dexamenes', 'Εγκαταστάσεις βιολογικού καθαρισμού Όρδας': 'viologikos', 'Εγκαταστάσεις δεξαμενών Ορεστιάδας': 'dexamenes-oresti', 'Μονάδα καθαρισμού φίλτρων νερού Λεπτής Ορεστιάδας': 'leptis', 'Συλλεκτικές φωτογραφίες της Ορεστιάδας': 'syllektikes'};
+  function recount(g) {
+    document.querySelectorAll('#galtabs .chip').forEach(function (c) {
+      var k = c.getAttribute('data-k');
+      var n = k ? g.querySelectorAll('[data-cat="' + k + '"]').length : g.querySelectorAll('a.g').length;
+      c.textContent = c.textContent.replace(/\(\d+\)\s*$/, '(' + n + ')');
+    });
   }
   var R = {
     apofaseis: function (x) {
@@ -36,9 +45,14 @@
       return li(x.imerominia, 'Διαγωνισμός', esc(x.titlos), b);
     },
     programmata: function (x) { return doc(x.pdf, x.titlos + ' (' + x.etos + ')' + (x.programma ? ' · ' + x.programma : '')); },
-    oikonomika: function (x) { return doc(x.pdf, x.titlos); }
+    oikonomika: function (x) { return doc(x.pdf, x.titlos); },
+    fotografies: function (x) {
+      if (!x.eikona) return '';
+      var cap = x.titlos || 'Φωτογραφία';
+      return '<a class="g" href="' + esc(x.eikona) + '" data-cat="' + esc(CAT[x.katigoria] || 'cms') + '" data-cap="' + esc(cap) + '" aria-label="Μεγέθυνση: ' + esc(cap) + '"><img src="' + esc(x.eikona) + '" alt="' + esc(x.perigrafi || cap) + '" loading="lazy"></a>';
+    }
   };
-  var LIST = {diakopes: 'div', programmata: 'div', oikonomika: 'div'};
+  var LIST = {diakopes: 'div', programmata: 'div', oikonomika: 'div', fotografies: 'div'};
   document.querySelectorAll('[data-cms]').forEach(function (el) {
     var k = el.getAttribute('data-cms'); if (!R[k]) return;
     var quiet = el.hasAttribute('data-quiet');
@@ -49,6 +63,8 @@
       var n = parseInt(el.getAttribute('data-limit'), 10); if (n) l = l.slice(0, n);
       if (!l.length) { el.innerHTML = quiet ? '' : '<p>Δεν υπάρχουν καταχωρίσεις.</p>'; return; }
       var html = l.map(R[k]).join('');
+      var into = el.getAttribute('data-into') && document.getElementById(el.getAttribute('data-into'));
+      if (into) { into.insertAdjacentHTML('afterbegin', html); recount(into); return; }
       var title = el.getAttribute('data-title');
       el.innerHTML = (title ? '<h2>' + esc(title) + '</h2>' : '') + (LIST[k] ? html : '<ul class="nlist">' + html + '</ul>');
     }).catch(function () { el.innerHTML = quiet ? '' : '<p>Δεν ήταν δυνατή η φόρτωση.</p>'; });
