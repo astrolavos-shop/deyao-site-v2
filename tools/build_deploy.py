@@ -18,7 +18,7 @@ OUT = os.path.join(DIST, 'deyao-site')
 SITE = 'https://www.deyao.gr'
 
 SKIP_DIRS = {'.git', '.github', 'tools', 'dist', 'wp-content', 'node_modules'}
-SKIP_FILES = {'CNAME', 'anakoinosi.html', '.gitignore', '.pages.yml'}
+SKIP_FILES = {'CNAME', 'anakoinosi.html', 'cms-dokimi.html', '.gitignore', '.pages.yml'}
 NOINDEX = re.compile(r'<meta name="robots" content="noindex,\s*nofollow">\s*')
 
 if os.path.isdir(OUT):
