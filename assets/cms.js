@@ -2,6 +2,7 @@
    Χρήση σε σελίδα: <div data-cms="apofaseis"></div> και <script src="/assets/cms.js"></script>
    Προαιρετικά data-limit="5" για τις πιο πρόσφατες μόνο,
    data-programma="ΕΣΠΑ 2021-2027" (programmata) και data-eidos="Ισολογισμός" (programmata, oikonomika) για φιλτράρισμα,
+   data-programma δέχεται και πολλά με | (π.χ. "ΕΣΠΑ 2021-2027|ΠΕΚΑ 2021-2027"), data-title: επικεφαλίδα που εμφανίζεται μόνο αν υπάρχουν καταχωρίσεις,
    data-quiet: χωρίς μήνυμα όταν δεν υπάρχουν καταχωρίσεις (για σελίδες με ήδη υπάρχουσα λίστα). */
 (function () {
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) { return {'&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;'}[c]; }); }
@@ -43,12 +44,13 @@
     var quiet = el.hasAttribute('data-quiet');
     fetch('/data/' + k + '.json', {cache: 'no-cache'}).then(function (r) { return r.json(); }).then(function (l) {
       l = (l || []).slice().sort(function (a, b) { return String(b.imerominia || b.etos).localeCompare(String(a.imerominia || a.etos)); });
-      var fp = el.getAttribute('data-programma'); if (fp) l = l.filter(function (x) { return x.programma === fp; });
+      var fp = el.getAttribute('data-programma'); if (fp) { var fps = fp.split('|'); l = l.filter(function (x) { return fps.indexOf(x.programma) >= 0; }); }
       var fe = el.getAttribute('data-eidos'); if (fe) l = l.filter(function (x) { return x.eidos === fe; });
       var n = parseInt(el.getAttribute('data-limit'), 10); if (n) l = l.slice(0, n);
       if (!l.length) { el.innerHTML = quiet ? '' : '<p>Δεν υπάρχουν καταχωρίσεις.</p>'; return; }
       var html = l.map(R[k]).join('');
-      el.innerHTML = LIST[k] ? html : '<ul class="nlist">' + html + '</ul>';
+      var title = el.getAttribute('data-title');
+      el.innerHTML = (title ? '<h2>' + esc(title) + '</h2>' : '') + (LIST[k] ? html : '<ul class="nlist">' + html + '</ul>');
     }).catch(function () { el.innerHTML = quiet ? '' : '<p>Δεν ήταν δυνατή η φόρτωση.</p>'; });
   });
 })();
