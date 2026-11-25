@@ -100,3 +100,19 @@ content:
         type: select
         options: { values: [Προϋπολογισμός, Ισολογισμός, Απολογισμός, Άλλο] }
       - { name: pdf, label: Αρχείο PDF, type: file }
+
+  - name: fotografies
+    label: Φωτογραφικό υλικό
+    type: file
+    path: data/fotografies.json
+    format: json
+    list: true
+    fields:
+      - { name: titlos, label: Λεζάντα, type: string, required: true }
+      - name: katigoria
+        label: Κατηγορία
+        type: select
+        options: { values: ["Δεξαμενές νερού της ΔΕΥΑ Ορεστιάδας", "Εγκαταστάσεις βιολογικού καθαρισμού Όρδας", "Εγκαταστάσεις δεξαμενών Ορεστιάδας", "Μονάδα καθαρισμού φίλτρων νερού Λεπτής Ορεστιάδας", "Συλλεκτικές φωτογραφίες της Ορεστιάδας", "Άλλο"] }
+      - { name: eikona, label: Φωτογραφία, type: image, required: true }
+      - { name: perigrafi, label: "Τι δείχνει η φωτογραφία (για άτομα με προβλήματα όρασης)", type: string }
+      - { name: imerominia, label: Ημερομηνία, type: date }
