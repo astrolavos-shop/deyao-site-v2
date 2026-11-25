@@ -63,6 +63,10 @@ content:
     fields:
       - { name: titlos, label: Τίτλος, type: string, required: true }
       - { name: imerominia, label: Ημερομηνία, type: date, required: true }
+      - name: eidos
+        label: Είδος
+        type: select
+        options: { values: [Προμήθεια, Υπηρεσία, Έργο, Πρόσκληση] }
       - { name: kodikos, label: "Αριθμός ΚΗΜΔΗΣ / ΕΣΗΔΗΣ", type: string }
       - { name: keimeno, label: Περιγραφή, type: text }
       - { name: synimmena, label: Συνημμένα, type: file, list: true }
