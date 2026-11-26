@@ -75,8 +75,8 @@ export default {
       if (q.has('s')) return Response.redirect(new URL('/search.html?q=' + encodeURIComponent(q.get('s')), url).toString(), 301);
     }
     const key = path.replace(/^\/+|\/+$/g, '');
-    if (key === 'arxeio') return go(url, '/arxeio.html');
-    if (OLD_PAGES[key]) return go(url, OLD_PAGES[key]);
+    if (key === 'arxeio' && url.pathname !== '/arxeio') return go(url, '/arxeio.html');
+    if (OLD_PAGES[key] && OLD_PAGES[key].replace(/\.html$/, '') !== url.pathname) return go(url, OLD_PAGES[key]);
     if (/^(category|tag|author|feed|comments)(\/|$)/.test(key) || /^[^/]+\/feed$/.test(key)) return go(url, '/nea.html');
     if (SLUGS[key]) return go(url, SLUGS[key]);
 
