@@ -1,7 +1,7 @@
 /* Worker για το deyao.gr στο Cloudflare.
  * Δημιουργείται από το tools/cloudflare/build_worker.py — μην το αλλάζετε με το χέρι.
  *
- * - /wp-content/...  -> αντίγραφο στο Cloudflare KV (FILES), αλλιώς ο παλιός server
+ * - /wp-content/...  -> Cloudflare R2 (BUCKET), με εφεδρεία KV (FILES) και παλιό server
  * - παλιές διευθύνσεις WordPress (?p=, ?page_id=, ?s=, /<slug>/, παλιές σελίδες) -> 301 στις νέες
  * - /send.php (POST) -> email στη ΔΕΥΑΟ μέσω Resend (μεταβλητή RESEND_KEY)
  * - όλα τα άλλα -> το νέο site στο Cloudflare Pages (μεταβλητή PAGES_ORIGIN)
@@ -53,23 +53,32 @@ async function send(req, env) {
 }
 
 async function files(req, env, ctx, key) {
-  if (!env.FILES || (req.method !== 'GET' && req.method !== 'HEAD')) return fetch(req);
-  const hit = await env.FILES.getWithMetadata(key, { type: 'stream' });
-  const md = hit.metadata || {};
-  if (hit.value) {
-    const h = new Headers({ 'content-type': md.ct || 'application/octet-stream', 'cache-control': 'public, max-age=86400', 'x-deyao-src': 'kv' });
-    if (md.len) h.set('content-length', md.len);
-    if (req.method === 'HEAD') { hit.value.cancel(); return new Response(null, { headers: h }); }
-    return new Response(hit.value, { headers: h });
+  if (req.method !== 'GET' && req.method !== 'HEAD') return fetch(req);
+  const head = req.method === 'HEAD';
+  // 1. R2 (κύριος χώρος των παλιών αρχείων)
+  if (env.BUCKET) {
+    const o = head ? await env.BUCKET.head(key) : await env.BUCKET.get(key);
+    if (o) {
+      const h = new Headers({ 'content-type': (o.httpMetadata && o.httpMetadata.contentType) || 'application/octet-stream', 'cache-control': 'public, max-age=86400', 'x-deyao-src': 'r2', 'content-length': String(o.size) });
+      return new Response(head ? null : o.body, { headers: h });
+    }
   }
-  // πρώτη φορά: από τον παλιό server και αντίγραφο στο KV
-  const r = await fetch(req.url, { method: 'GET' });
-  const len = +(r.headers.get('content-length') || 0);
-  if (!r.ok || !r.body || !len || len > 25000000) return req.method === 'HEAD' ? new Response(null, { status: r.status, headers: r.headers }) : r;
-  const [a, b] = r.body.tee();
-  ctx.waitUntil(env.FILES.put(key, b, { metadata: { ct: r.headers.get('content-type'), len: String(len) } }));
-  if (req.method === 'HEAD') { a.cancel(); return new Response(null, { status: r.status, headers: r.headers }); }
-  return new Response(a, { status: r.status, headers: r.headers });
+  // 2. παλιό αντίγραφο KV, αλλιώς ο παλιός server — και αντιγραφή στο R2
+  let buf = null, ct = null;
+  if (env.FILES) {
+    const hit = await env.FILES.getWithMetadata(key, { type: 'arrayBuffer' });
+    if (hit.value) { buf = hit.value; ct = (hit.metadata || {}).ct; }
+  }
+  if (!buf) {
+    const r = await fetch(req.url, { method: 'GET' });
+    if (!r.ok) return head ? new Response(null, { status: r.status }) : r;
+    buf = await r.arrayBuffer();
+    ct = r.headers.get('content-type');
+  }
+  ct = ct || 'application/octet-stream';
+  if (env.BUCKET) ctx.waitUntil(env.BUCKET.put(key, buf, { httpMetadata: { contentType: ct } }));
+  const h = new Headers({ 'content-type': ct, 'cache-control': 'public, max-age=86400', 'x-deyao-src': 'copy', 'content-length': String(buf.byteLength) });
+  return new Response(head ? null : buf, { headers: h });
 }
 
 export default {
