@@ -1,7 +1,7 @@
 /* Worker για το deyao.gr στο Cloudflare.
  * Δημιουργείται από το tools/cloudflare/build_worker.py — μην το αλλάζετε με το χέρι.
  *
- * - /wp-content/...  -> ο παλιός server (τα PDF μένουν εκεί που είναι)
+ * - /wp-content/...  -> αντίγραφο στο Cloudflare KV (FILES), αλλιώς ο παλιός server
  * - παλιές διευθύνσεις WordPress (?p=, ?page_id=, ?s=, /<slug>/, παλιές σελίδες) -> 301 στις νέες
  * - /send.php (POST) -> email στη ΔΕΥΑΟ μέσω Resend (μεταβλητή RESEND_KEY)
  * - όλα τα άλλα -> το νέο site στο Cloudflare Pages (μεταβλητή PAGES_ORIGIN)
@@ -52,8 +52,28 @@ async function send(req, env) {
   return done(r.ok, 500);
 }
 
+async function files(req, env, ctx, key) {
+  if (!env.FILES || (req.method !== 'GET' && req.method !== 'HEAD')) return fetch(req);
+  const hit = await env.FILES.getWithMetadata(key, { type: 'stream' });
+  const md = hit.metadata || {};
+  if (hit.value) {
+    const h = new Headers({ 'content-type': md.ct || 'application/octet-stream', 'cache-control': 'public, max-age=86400', 'x-deyao-src': 'kv' });
+    if (md.len) h.set('content-length', md.len);
+    if (req.method === 'HEAD') { hit.value.cancel(); return new Response(null, { headers: h }); }
+    return new Response(hit.value, { headers: h });
+  }
+  // πρώτη φορά: από τον παλιό server και αντίγραφο στο KV
+  const r = await fetch(req.url, { method: 'GET' });
+  const len = +(r.headers.get('content-length') || 0);
+  if (!r.ok || !r.body || !len || len > 25000000) return req.method === 'HEAD' ? new Response(null, { status: r.status, headers: r.headers }) : r;
+  const [a, b] = r.body.tee();
+  ctx.waitUntil(env.FILES.put(key, b, { metadata: { ct: r.headers.get('content-type'), len: String(len) } }));
+  if (req.method === 'HEAD') { a.cancel(); return new Response(null, { status: r.status, headers: r.headers }); }
+  return new Response(a, { status: r.status, headers: r.headers });
+}
+
 export default {
-  async fetch(req, env) {
+  async fetch(req, env, ctx) {
     const url = new URL(req.url);
     let path;
     try { path = decodeURIComponent(url.pathname); } catch (e) { path = url.pathname; }
@@ -65,7 +85,7 @@ export default {
       return new Response('Forbidden', { status: 403 });
     }
     // τα συνημμένα μένουν στον παλιό server
-    if (path.startsWith('/wp-content/')) return fetch(req);
+    if (path.startsWith('/wp-content/')) return files(req, env, ctx, path);
 
     if (path === '/send.php' && req.method === 'POST') return send(req, env);
 
